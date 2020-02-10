@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <limits>
 
 #include "Queue.hpp"
 
@@ -17,24 +18,31 @@ int main()
 
 void menu()
 {
-	std::cout << "Input number of arrivals (1000 <= n <= 5000)" << std::endl;
 	do
 	{
+		std::string error = "";
+		std::cout << "Input number of arrivals (1000 <= n <= 5000)" << std::endl;
 		try
 		{
 			std::cin >> n;
+			if(std::cin.fail())
+			{
+				throw error;
+			}
 			if(n < 1000 || n > 5000)
 			{
 				throw n;
 			}
 		}
-		catch(int n)
+		catch(int)
 		{
 			std::cout << "Input must be greater than or equal to 1000 and less than or equal to 5000" << std::endl;
 		}
-		catch(int x)
+		catch(std::string error)
 		{
-			std::cout << "Bad input" << std::endl;
+			std::cout << "Invalid Input. Please input number" << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 		}
 	} while(n < 1000 || n > 5000);
 
