@@ -6,8 +6,8 @@
 #include "Queue.hpp"
 
 int n;
-int lambda;
-int mu;
+float lambda;
+float mu;
 int M;
 void menu();
 
@@ -18,9 +18,10 @@ int main()
 
 void menu()
 {
+	std::string error = "";
+
 	do
 	{
-		std::string error = "";
 		std::cout << "Input number of arrivals (1000 <= n <= 5000)" << std::endl;
 		try
 		{
@@ -46,19 +47,84 @@ void menu()
 		}
 	} while(n < 1000 || n > 5000);
 
-	std::cout << "Input average arrivals in a time period" << std::endl;
-	std::cin >> lambda;
-
-	std::cout << "Input average number served in a time period" << std::endl;
-	std::cin >> mu;
-
-	std::cout << "Input the number of service channels (1 <= M <= 10)" << std::endl;
 	do
 	{
-		std::cin >> M;
-		if(M < 1 || M > 10)
+		std::cout << "Input average arrivals in a time period" << std::endl;
+		try
 		{
-			std::cout << "Input must be greater than or equal to 1 and less than or equal to 10" << std::endl;
+			std::cin >> lambda;
+			if(std::cin.fail())
+			{
+				throw error;
+			}
+			if(lambda <= 0)
+			{
+				throw lambda;
+			}
+		}
+		catch(float)
+		{
+			std::cout << "Input must be greater than 0" << std::endl;
+		}
+		catch(std::string error)
+		{
+			std::cout << "Invalid Input. Please input number" << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+		}
+	} while(lambda <= 0);
+
+	do
+	{
+		std::cout << "Input average number served in a time period" << std::endl;
+		try
+		{
+			std::cin >> mu;
+			if(std::cin.fail())
+			{
+				throw error;
+			}
+			if(mu <= 0)
+			{
+				throw mu;
+			}
+		}
+		catch(float)
+		{
+			std::cout << "Input must be greater than 0" << std::endl;
+		}
+		catch(std::string error)
+		{
+			std::cout << "Invalid Input. Please input number" << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+		}
+	} while(mu <= 0);
+
+	do
+	{
+		std::cout << "Input the number of service channels (1 <= M <= 10)" << std::endl;
+		try
+		{
+			std::cin >> M;
+			if(std::cin.fail())
+			{
+				throw error;
+			}
+			if(M < 1 || M > 10)
+			{
+				throw M;
+			}
+		}
+		catch(int)
+		{
+			std::cout << "Input must be greater than or equal to 1 or less then or equal to 10" << std::endl;
+		}
+		catch(std::string error)
+		{
+			std::cout << "Invalid Input. Please input number" << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 		}
 	} while(M < 1 || M > 10);
 }
