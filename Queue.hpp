@@ -5,6 +5,7 @@
 #include <queue>
 #include <math.h>
 #include <time.h>
+#include <string>
 
 #include "Customer.hpp"
 
@@ -12,17 +13,28 @@ class Queue
 {
 	public:
 		Queue(int n, float lamda, float mu, int M);
-		bool isEmpty();
 		float GetNextRandomInterval(float avg);
-		void InsertIntoPriorityQueue();
+		void InsertIntoPQ(Customer * C);
+		int parent(int num) {return (num-1)/2;}
+		int left(int num) {return (2*num + 1);}
+		int right(int num) {return (2*num - 1);}
 		void processStatistics();
 		void processNextEvent();
+		Customer * DeleteFromPQ();
+		void MinHeapify(int num);
+		void PrintResults();
 	private:
-		Customer * front == NULL;
+		int TotalServers;
 		int serverAvailableCnt;
 		int numCustomers;
 		float mu;
-		std::queue <Customer> FIFO;
+		int CustomerWaitedCnt = 0;
+		float TotalWaitTime = 0;
+		float TotalServiceTime = 0;
+		float IdleTime = 0;
+		int heap_size;
+		Customer * PQ[10] = {nullptr};
+		std::queue<Customer*> FIFO;
 };
 
 #endif
